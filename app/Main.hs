@@ -55,9 +55,6 @@ initialInputs =
   , "9 := S 8"
   ]
 
-initialAliases :: [T.Text]
-initialAliases = map T.pack initialInputs
-
 initialEnvironment :: Foldable t => t T.Text -> Aliases
 initialEnvironment = foldl runSilent M.empty
 
@@ -70,4 +67,4 @@ initialMessage = "Please evaluate one lambda expression before using "
 main :: IO ()
 main = do
   putStrLn(initialMessage)
-  repl $ initialEnvironment initialAliases
+  repl $ initialEnvironment $ map T.pack initialInputs
