@@ -1,0 +1,12 @@
+stages:
+  - Build
+
+Build:
+  stage: Build
+  image: fpco/stack-build-small:latest
+  script:
+    - stack build --copy-bins
+    - mv ~/.local/bin/mu mu
+  artifacts:
+    paths:
+      - mu
