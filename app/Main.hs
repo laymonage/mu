@@ -57,6 +57,10 @@ initialInputs =
   , "7 := S 6"
   , "8 := S 7"
   , "9 := S 8"
+  , "T := \\x.\\y.x"
+  , "F := \\x.\\y.y"
+  , "True := T"
+  , "False := F"
   ]
 
 -- | Evaluates a list of Text in the environment.
