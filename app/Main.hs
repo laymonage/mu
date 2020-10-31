@@ -52,7 +52,8 @@ initialInputs =
   , "6 := S 5"
   , "7 := S 6"
   , "8 := S 7"
-  , "9 := S 8" ]
+  , "9 := S 8"
+  ]
 
 initialAliases :: [T.Text]
 initialAliases = map T.pack initialInputs
@@ -60,6 +61,13 @@ initialAliases = map T.pack initialInputs
 initialEnvironment :: Foldable t => t T.Text -> Aliases
 initialEnvironment = foldl runSilent M.empty
 
+initialMessage :: String
+initialMessage = "Please evaluate one lambda expression before using "
+  ++ "this program (e.g. \\x.x).\n"
+  ++ "This is necessary in order to flush the traces of Church's numerals "
+  ++ "initialization."
 
 main :: IO ()
-main = repl $ initialEnvironment initialAliases
+main = do
+  putStrLn(initialMessage)
+  repl $ initialEnvironment initialAliases
