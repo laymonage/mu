@@ -45,6 +45,8 @@ repl as = do
 initialInputs :: [String]
 initialInputs =
   [ "S := \\w.\\y.\\x.y(w y x)"
+  , "+ := S"
+  , "* := \\x.\\y.\\z.x(y z)"
   , "0 := \\s.\\z.z"
   , "1 := S 0"
   , "2 := S 1"
