@@ -22,6 +22,7 @@ run as source =
       return as'
 
 
+-- | Evaluates an input silently (without printing the final result).
 runSilent :: Aliases -> T.Text -> Aliases
 runSilent as source =
   case runParser program "repl" source of
@@ -40,6 +41,7 @@ repl as = do
   repl as'
 
 
+-- | Predefined inputs to be evaluated in the environment.
 initialInputs :: [String]
 initialInputs =
   [ "S := \\w.\\y.\\x.y(w y x)"
@@ -55,6 +57,7 @@ initialInputs =
   , "9 := S 8"
   ]
 
+-- | Evaluates a list of Text in the environment.
 initialEnvironment :: Foldable t => t T.Text -> Aliases
 initialEnvironment = foldl runSilent M.empty
 
