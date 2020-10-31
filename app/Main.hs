@@ -41,6 +41,13 @@ repl as = do
   repl as'
 
 
+-- | Force the initialization to be evaluated and the traces to be flushed.
+replEntry :: Aliases -> IO ()
+replEntry as = do
+  _ <- run as $ T.pack "Initialization finished"
+  repl as
+
+
 -- | Predefined inputs to be evaluated in the environment.
 initialInputs :: [String]
 initialInputs =
@@ -72,12 +79,9 @@ initialEnvironment :: Foldable t => t T.Text -> Aliases
 initialEnvironment = foldl runSilent M.empty
 
 initialMessage :: String
-initialMessage = "Please evaluate one lambda expression before using "
-  ++ "this program (e.g. \\x.x).\n"
-  ++ "This is necessary in order to flush the traces of Church's numerals "
-  ++ "initialization."
+initialMessage = "Initializing predefined aliases..."
 
 main :: IO ()
 main = do
   putStrLn(initialMessage)
-  repl $ initialEnvironment $ map T.pack initialInputs
+  replEntry $ initialEnvironment $ map T.pack initialInputs
