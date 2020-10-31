@@ -45,4 +45,81 @@ index cf647a0..19a1628 100644
          else ast
 ```
 
+## Definisi alias untuk Church's Numerals dan ekspresi lainnya
+
+Untuk memudahkan penggunaan, beberapa alias telah dibuat untuk ekspresi lambda
+yang umum digunakan, yakni `S`, `+`, `*`, `0` sampai `9`, `T`, `F`, `True`,
+`False`, `not`, `and`, `or`, dan `Z`.
+
+Untuk mengimplementasikan alias tersebut supaya tersedia ketika program
+dijalankan, dilakukan modifikasi pada kode program. Beberapa di antara
+modifikasi tersebut adalah sebagai berikut.
+
+### Penambahan fungsi `runSilent`
+
+Untuk memudahkan penambahan alias pada `Map` yang ada di program, dibuat
+fungsi `runSilent` yang dapat mengevaluasi input tanpa konteks `IO`.
+Fungsi `runSilent` disadur dari fungsi `run` dan didefinisikan sebagai berikut.
+
+```haskell
+-- | Evaluates an input silently (without printing the final result).
+runSilent :: Aliases -> T.Text -> Aliases
+runSilent as source =
+  case runParser program "repl" source of
+    Left _ -> as
+    Right exprs -> do
+      let (_, as') = runState (sequence $ map evaluate exprs) as
+      as'
+```
+
+### Penambahan *list* `initialInputs`
+
+Alias dibuat dengan membuat *list* yang berisi `String` input, lalu
+memetakannya menjadi *list* yang berisi `Text`, yang kemudian dievaluasi satu
+per satu dengan menerapkan fungsi `runSilent` menggunakan `foldl`. Hasil
+akumulasi `foldl` yang berupa `Map` (`Aliases`) dijadikan sebagai *environment*
+awal untuk pemanggilan fungsi `repl` pada fungsi `main`.
+
+```haskell
+-- | Predefined inputs to be evaluated in the environment.
+initialInputs :: [String]
+initialInputs =
+  [ "S     := λw.λy.λx.y(w y x)"
+  , "+     := S"
+  , "*     := λx.λy.λz.x(y z)"
+  , ... -- and so on.
+  ]
+
+-- | Evaluates a list of Text in the environment.
+initialEnvironment :: Foldable t => t T.Text -> Aliases
+initialEnvironment = foldl runSilent M.empty
+```
+
+### Pemastian *flushing* evaluasi `initialInputs`
+
+Haskell mengevaluasi `initialInputs` secara *lazy* sehingga *trace* hasil
+evaluasinya baru muncul ketika pengguna memberikan suatu input berupa ekspresi.
+Untuk memastikan bahwa `initialInputs` telah dievaluasi dan *trace*-nya sudah
+dicetak, program dibuat agar mengevaluasi string `Initialization finished` pada
+awal program sebelum memanggil fungsi `repl`.
+
+```haskell
+-- | Force the initialization to be evaluated and the traces to be flushed.
+replEntry :: Aliases -> IO ()
+replEntry as = do
+  _ <- run as $ T.pack "Initialization finished"
+  repl as
+
+initialMessage :: String
+initialMessage = "Initializing predefined aliases..."
+
+main :: IO ()
+main = do
+  putStrLn(initialMessage)
+  replEntry $ initialEnvironment $ map T.pack initialInputs
+```
+
+Untuk lebih lengkapnya mengenai program ini, silakan baca
+[`README.mu.md`](README.mu.md).
+
 [mu]: https://github.com/vzwGrey/mu
