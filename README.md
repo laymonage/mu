@@ -7,7 +7,7 @@
 Repositori ini berisi pekerjaan Tugas 5 Pemrograman Fungsional 2020/2021
 Fakultas Ilmu Komputer, Universitas Indonesia.
 
-Pekerjaan ini merupakan *fork* dari repositori [vwzGrey/mu][mu] di GitHub.
+Pekerjaan ini merupakan *fork* dari repositori [**vwzGrey/mu**][mu] di GitHub.
 Adapun modifikasi yang diterapkan adalah sebagai berikut.
 
 ## *Tracing* evaluasi ekspresi lambda per langkah
@@ -16,7 +16,8 @@ Sebelum dimodifikasi, program `mu` hanya mencetak hasil akhir dari evaluasi
 ekspresi lambda. Supaya proses evaluasi terlihat lebih jelas, kode program
 dimodifikasi sehingga menunjukkan proses evaluasi pada setiap langkah.
 Modifikasi dilakukan dengan mengubah fungsi `reduce` pada
-[`app/Mu/Evaluator.hs`](app/Mu/Evaluator.hs) sebagai berikut.
+[`app/Mu/Evaluator.hs`](app/Mu/Evaluator.hs) supaya memanggil fungsi `trace`
+dari library `Debug.Trace` setiap kali melakukan *beta reduction*.
 
 ```diff
 diff --git a/app/Mu/Evaluator.hs b/app/Mu/Evaluator.hs
@@ -119,7 +120,11 @@ main = do
   replEntry $ initialEnvironment $ map T.pack initialInputs
 ```
 
-Untuk lebih lengkapnya mengenai program ini, silakan baca
-[`README.mu.md`](README.mu.md).
+## Lain-lain
+
+Berkas [`stack.yml`](stack.yaml) juga ditambahkan ke repositori ini untuk
+memudahkan instalasi menggunakan [Stack][stack]. Untuk lebih lengkapnya
+mengenai proyek `mu`, silakan baca [`README.mu.md`](README.mu.md).
 
 [mu]: https://github.com/vzwGrey/mu
+[stack]: https://docs.haskellstack.org
