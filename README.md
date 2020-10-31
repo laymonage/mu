@@ -36,8 +36,23 @@ yang umum digunakan, yakni `S`, `+`, `*`, `0` sampai `9`, `T`, `F`, `True`,
 `False`, `not`, `and`, `or`, dan `Z`.
 
 Untuk mengimplementasikan alias tersebut supaya tersedia ketika program
-dijalankan, dilakukan modifikasi pada kode [`app/Main.hs`](app/Main.hs).
+dijalankan, dilakukan modifikasi pada kode [`app/Main.hs`](app/Main.hs) dan
+[`app/Mu/Parser.hs`](app/Mu/Parser.hs).
 Beberapa di antara modifikasi tersebut adalah sebagai berikut.
+
+### Penambahan `+` dan `*` pada *lexeme* untuk *parser* *identifier*.
+
+Program `mu` pada awalnya hanya dapat menerima string alfanumerik sebagai
+*identifier*. Agar alias `+` dan `*` dapat dibuat, kedua karakter tersebut
+ditambahkan ke dalam *lexeme* untuk *parser* *identifier*. *Lexeme* ini
+didefinisikan pada fungsi `aliasIdent`.
+
+```diff
+ -- | Parse an identifier for an alias.
+ aliasIdent :: Parser Identifier
+- aliasIdent = T.pack <$> lexeme (M.some alphaNumChar)
++ aliasIdent = T.pack <$> lexeme (M.some $ alphaNumChar <|> char '+' <|> char '*')
+```
 
 ### Penambahan fungsi `runSilent`
 
