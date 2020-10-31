@@ -64,6 +64,7 @@ initialInputs =
   , "and := \\p.\\q.p q F"
   , "or := \\p.\\q.p T q"
   , "not := \\p.p F T"
+  , "Z := \\x.x F not F"
   ]
 
 -- | Evaluates a list of Text in the environment.
