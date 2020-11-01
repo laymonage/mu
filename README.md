@@ -33,7 +33,7 @@ dari library `Debug.Trace` setiap kali melakukan *beta reduction*.
 
 Untuk memudahkan penggunaan, beberapa alias telah dibuat untuk ekspresi lambda
 yang umum digunakan, yakni `S`, `+`, `*`, `0` sampai `9`, `T`, `F`, `True`,
-`False`, `not`, `and`, `or`, dan `Z`.
+`False`, `not`, `and`, `or`, `Z`, dan `ifthenelse`.
 
 Untuk mengimplementasikan alias tersebut supaya tersedia ketika program
 dijalankan, dilakukan modifikasi pada kode [`app/Main.hs`](app/Main.hs) dan
