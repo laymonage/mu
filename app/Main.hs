@@ -60,7 +60,7 @@ repl as = do
 -- | Force the initialization to be evaluated and the traces to be flushed.
 replEntry :: Aliases -> IO ()
 replEntry as = do
-  _ <- run as $ T.pack "Initialization finished"
+  _ <- run as $ "Initialization finished"
   repl as
 
 
