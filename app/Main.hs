@@ -24,7 +24,7 @@ printLiteral text = do
       then putStrLn (show numMult)
       else if or [numPlus >= 1, text == "λs.λz.z"]  -- 0 does not have y
       then putStrLn (show numPlus)
-      else putStr ""
+      else return ()
 
 
 run :: Aliases -> T.Text -> IO Aliases
