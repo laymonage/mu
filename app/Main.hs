@@ -4,7 +4,6 @@ import System.IO
 import Control.Monad.State
 import qualified Data.Map.Strict as M
 import qualified Data.Text as T
-import Data.List (intercalate)
 import Text.Megaparsec
 import Mu.Parser
 import Mu.Evaluator
@@ -18,7 +17,18 @@ run as source =
       return as
     Right exprs -> do
       let (res, as') = runState (sequence $ map evaluate exprs) as
-      putStrLn $ intercalate " ; " $ map (T.unpack . prettyAST) res
+      let text = T.intercalate " ; " (map prettyAST res)
+      -- VERY NAIVE number checking
+      let numPlus = T.count "(y " text  -- number produced from + operations
+      let numMult = T.count "z " text  -- number produced from * operations
+      putStrLn $ T.unpack text
+      if numMult >= 1
+        then do
+          putStrLn (show numMult)
+        else if or [numPlus >= 1, text == "λs.λz.z"]
+        then do
+          putStrLn (show numPlus)
+        else putStr ""
       return as'
 
 
