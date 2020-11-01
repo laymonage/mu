@@ -87,16 +87,19 @@ Untuk memastikan bahwa `initialInputs` telah dievaluasi dan *trace*-nya sudah
 dicetak, dibuat fungsi `replEntry` agar mengevaluasi string
 `Initialization finished` pada awal program sebelum memanggil fungsi `repl`.
 
-## Konversi Church's Numerals kembali ke digit desimal
+## Konversi Church's Numerals kembali ke digit desimal atau literal Boolean
 
 Untuk kemudahan membaca keluaran, Church's Numerals yang dicetak ke layar juga
 dicetak dalam bentuk digit desimal. Fitur ini diimplementasikan dengan
 **sangat naif**, yakni dengan menghitung kemunculan `(y ` dalam `Text` yang
 akan dicetak. Selain itu, jika bilangan merupakan hasil perkalian, maka yang
-dihitung adalah kemunculan `z ` dalam `Text` yang akan dicetak. Akibat naifnya
-implementasi ini, mungkin akan muncul *bug* di mana ada bilangan dalam digit
-desimal yang dicetak, padahal ekspresinya bukan merupakan bilangan dalam
-Church's Numerals.
+dihitung adalah kemunculan `z ` dalam `Text` yang akan dicetak. Untuk bilangan
+`0`, dilakukan pemeriksaan dengan `== "λs.λz.z"`. Akibat naifnya implementasi
+ini, mungkin akan muncul *bug* di mana ada bilangan dalam digit desimal yang
+dicetak, padahal ekspresinya bukan merupakan bilangan dalam Church's Numerals.
+
+Selain bilangan bulat, ekspresi lambda yang berupa nilai Boolean `True` atau
+`False` juga dikonversi kembali menjadi literal `True` dan `False`.
 
 ## Lain-lain
 

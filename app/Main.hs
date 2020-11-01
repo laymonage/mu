@@ -9,19 +9,22 @@ import Mu.Parser
 import Mu.Evaluator
 import Mu.Util
 
--- | Prints the decimal digit representation of a lambda expression
+-- | Prints the decimal digit or Boolean representation of a lambda expression
 -- | (VERY NAIVELY).
-printNumber :: T.Text -> IO ()
-printNumber text = do
-  let numPlus = T.count "(y " text  -- number produced from + operations
-  let numMult = T.count "z " text  -- number produced from * operations
-  if numMult >= 1
-    then do
-      putStrLn (show numMult)
-    else if or [numPlus >= 1, text == "λs.λz.z"]  -- 0 does not have y
-    then do
-      putStrLn (show numPlus)
-    else putStr ""
+printLiteral :: T.Text -> IO ()
+printLiteral text = do
+  if text == "λx.λy.x"
+    then putStrLn "True"
+  else if text == "λx.λy.y"
+    then putStrLn "False"
+  else do
+    let numPlus = T.count "(y " text  -- number produced from + operations
+    let numMult = T.count "z " text  -- number produced from * operations
+    if numMult >= 1
+      then putStrLn (show numMult)
+      else if or [numPlus >= 1, text == "λs.λz.z"]  -- 0 does not have y
+      then putStrLn (show numPlus)
+      else putStr ""
 
 
 run :: Aliases -> T.Text -> IO Aliases
@@ -34,7 +37,7 @@ run as source =
       let (res, as') = runState (sequence $ map evaluate exprs) as
       let text = T.intercalate " ; " (map prettyAST res)
       putStrLn $ T.unpack text
-      printNumber text
+      printLiteral text
       return as'
 
 
