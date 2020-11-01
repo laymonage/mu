@@ -87,6 +87,17 @@ Untuk memastikan bahwa `initialInputs` telah dievaluasi dan *trace*-nya sudah
 dicetak, dibuat fungsi `replEntry` agar mengevaluasi string
 `Initialization finished` pada awal program sebelum memanggil fungsi `repl`.
 
+## Konversi Church's Numerals kembali ke digit desimal
+
+Untuk kemudahan membaca keluaran, Church's Numerals yang dicetak ke layar juga
+dicetak dalam bentuk digit desimal. Fitur ini diimplementasikan dengan
+**sangat naif**, yakni dengan menghitung kemunculan `(y ` dalam `Text` yang
+akan dicetak. Selain itu, jika bilangan merupakan hasil perkalian, maka yang
+dihitung adalah kemunculan `z ` dalam `Text` yang akan dicetak. Akibat naifnya
+implementasi ini, mungkin akan muncul *bug* di mana ada bilangan dalam digit
+desimal yang dicetak, padahal ekspresinya bukan merupakan bilangan dalam
+Church's Numerals.
+
 ## Lain-lain
 
 Berkas [`stack.yml`](stack.yaml) juga ditambahkan ke repositori ini untuk
